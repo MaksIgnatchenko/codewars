@@ -26,8 +26,48 @@ puzzle(143) --> 2 ([3 + 12 + 128, 7 + 8 + 128] are solutions)
 */
 
 function countKprimes($k, $start, $nd) {
-    // your code
+    $arr = array();
+    for($i = $start; $i <= $nd; $i++){
+        if(getPrimeFactors($i) == $k)
+            $arr[] = $i;
+    }
+    return $arr;
 }
+
 function puzzle($s) {
-    // your code
+    $primes = countKprimes(1, 1, $s);
+    $threeprimes = countKprimes(3, 1, $s);
+    $sevenprimes = countKprimes(7, 1, $s);
+    
+    $cnt = 0;
+    for($a = 0; $a < count($primes); $a++){
+        for($b = 0; $b < count($threeprimes); $b++){
+            for($c = 0; $c < count($sevenprimes); $c++){
+                if( $primes[$a] + $threeprimes[$b] + $sevenprimes[$c] == $s )
+                    $cnt += 1;
+            }
+        }
+    }
+    
+    return $cnt;
 }
+
+function getPrimeFactors($n){
+    if ($n < 1) return 0;
+    $cnt = 0;
+    while ($n%2 == 0){
+        $n /= 2;
+        $cnt++;
+    }
+    for ($i = 3; $i <= sqrt($n); $i+=2) {
+        while($n%$i == 0){
+            $n /= $i;
+            $cnt++;
+        }
+    }
+    return ($n > 2) ? $cnt+1 : $cnt;
+}
+
+
+
+
